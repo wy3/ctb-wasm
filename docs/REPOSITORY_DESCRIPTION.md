@@ -1,24 +1,21 @@
-# 仓库创建信息 / Repository setup text
+# 仓库简介与 Topics / Repository description and topics
 
-## 推荐仓库名 / Suggested repository name
+## GitHub Description（推荐）
 
-`ctb-wasm`
+> WebAssembly encoder for Cesium quantized-mesh terrain, with browser and Node.js GeoTIFF-to-ZIP examples.
 
-## GitHub / Codeup 简介（英文） / Short description (English)
+## 中文简介
 
-> A WebAssembly encoder for Cesium quantized-mesh terrain, based on Cesium Terrain Builder.
+> 基于 Cesium Terrain Builder 的 WebAssembly 地形编码器，提供浏览器和 Node.js GeoTIFF 到 Cesium quantized-mesh ZIP 的示例。
 
-## 简介（简体中文） / Short description (Simplified Chinese)
+## GitHub Topics
 
-> 基于 Cesium Terrain Builder 的 WebAssembly 编码器，将高程网格转换为 Cesium quantized-mesh 地形瓦片。
+`cesium`, `cesium-terrain`, `cesium-terrain-builder`, `quantized-mesh`, `terrain`, `terrain-tiles`, `geotiff`, `geospatial`, `webassembly`, `wasm`, `zig`, `tms`
 
-## Topics / 主题标签
+## 仓库设置 / Repository settings
 
-`cesium`, `quantized-mesh`, `terrain`, `webassembly`, `wasm`, `zig`
-
-## 发布设置建议 / Suggested publishing settings
-
+- Repository: `wy3/ctb-wasm`
+- Default branch: `master`
 - License: Apache-2.0 for project-authored code; retain the bundled CTB and zlib notices.
-- Default branch: `main`.
-- Add a remote only after choosing the hosting namespace and visibility.
-- The repository is a library/build component, not a complete GeoTIFF-to-terrain application.
+- The WASM encoder is the core component. GeoTIFF reading and ZIP packaging are demonstrated by the examples, not part of the encoder ABI.
+- ZIP packaging in the examples is performed in the browser or Node.js with `fflate`; no server-side upload service is included.
