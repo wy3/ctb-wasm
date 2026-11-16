@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Convert an EPSG:4326 GeoTIFF to a Cesium quantized-mesh terrain ZIP in your browser"
+    />
+    <title>GeoTIFF Terrain ZIP Demo</title>
+  </head>
+  <body>
+    <main class="panel">
+      <header>
+        <nav class="language"><a href="/" lang="zh-CN">简体中文</a></nav>
+        <p class="eyebrow">CTB-WASM</p>
+        <h1>GeoTIFF → Cesium Terrain ZIP</h1>
+        <p class="intro">
+          Read an elevation GeoTIFF in your browser, generate quantized-mesh
+          tiles and <code>layer.json</code>, then download them as a ZIP archive.
+        </p>
+      </header>
+
+      <form id="generator">
+        <label class="field">
+          <span>Input GeoTIFF</span>
+          <input id="geotiff" type="file" accept=".tif,.tiff,image/tiff" required />
+        </label>
+
+        <label class="field">
+          <span>Maximum zoom level</span>
+          <input id="max-zoom" type="number" min="0" max="30" value="8" required />
+        </label>
+
+        <button id="submit" type="submit">Generate and download ZIP</button>
+        <a id="download" hidden>Download generated ZIP</a>
+        <progress id="progress" max="100" value="0" hidden></progress>
+        <p id="status" role="status" aria-live="polite">Choose a GeoTIFF to get started.</p>
+      </form>
+
+      <aside>
+        <h2>Input requirements</h2>
+        <ul>
+          <li>Single-band, EPSG:4326, north-up, unrotated, PixelIsArea.</li>
+          <li>Elevations must be in meters. Sampling a NoData value fails.</li>
+          <li>Samples outside the raster bounds use the nearest edge value.</li>
+          <li>High zoom levels or large files use substantial memory; start low.</li>
+        </ul>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

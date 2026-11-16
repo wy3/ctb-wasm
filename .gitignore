@@ -2,3 +2,5 @@
 *.o
 *.obj
 *.tmp
+examples/node_modules/
+examples/web-dist/
