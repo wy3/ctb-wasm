@@ -1,0 +1,13 @@
+Upstream fork / 上游 fork: ahuarte47/cesium-terrain-builder
+Repository / 仓库: https://github.com/ahuarte47/cesium-terrain-builder
+Branch / 分支: master-quantized-mesh
+Commit / 提交: 74406677d867d4e4a1f157692b803f3bbfdb876f
+Patch / 补丁: patches/0001-uncompressed-terrain-output.patch
+
+The vendored CTB snapshot includes the patch above in
+vendor/ctb-mesh/src/CTBFileTileSerializer.cpp. The WASM build does not compile
+that serializer; the patch is retained for provenance and compatible CTB file
+output behavior.
+
+vendor/ctb-mesh/src/CTBFileTileSerializer.cpp 已应用上述补丁。WASM 构建不编译
+该 serializer；保留补丁用于记录来源及兼容 CTB 文件输出行为。

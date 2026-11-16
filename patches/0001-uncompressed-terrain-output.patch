@@ -1,0 +1,38 @@
+diff --git a/src/CTBFileTileSerializer.cpp b/src/CTBFileTileSerializer.cpp
+index 76ebc17..f489f18 100644
+--- a/src/CTBFileTileSerializer.cpp
++++ b/src/CTBFileTileSerializer.cpp
+@@ -150,6 +150,13 @@ ctb::CTBFileTileSerializer::serializeTile(const ctb::TerrainTile *tile) {
+ /**
+  * @details 
+  * Serialize a MeshTile to the Directory store
++ *
++ * 注意：这里输出**未压缩**的原始 quantized-mesh，而不是 gzip。
++ * 原因：Cesium 的 CesiumTerrainProvider 直接 `new DataView(buffer)` 解析 .terrain，
++ * 不会自动 gunzip；它依赖 HTTP 层的 Content-Encoding: gzip 头。
++ * 本地静态服务（http-server / nginx 默认配置）不会给 .terrain 加这个头，
++ * 导致 gzip 字节被当成原始 quantized-mesh 解析 → 地形完全不显示。
++ * 输出未压缩可让任意静态服务直接可用（体积约大 3~4 倍）。
+  */
+ bool
+ ctb::CTBFileTileSerializer::serializeTile(const ctb::MeshTile *tile, bool writeVertexNormals) {
+@@ -157,9 +164,16 @@ ctb::CTBFileTileSerializer::serializeTile(const ctb::MeshTile *tile, bool writeV
+   const string filename = getTileFilename(coordinate, moutputDir, "terrain");
+   const string temp_filename = concat(filename, ".tmp");
+ 
+-  CTBZFileOutputStream ostream(temp_filename.c_str());
+-  tile->writeFile(ostream, writeVertexNormals);
+-  ostream.close();
++  // CTBFileOutputStream 需要 FILE*，没有 close()，需手动 fclose
++  FILE *fp = fopen(temp_filename.c_str(), "wb");
++  if (fp == NULL) {
++    throw CTBException("Could not open temporary file for writing");
++  }
++  {
++    CTBFileOutputStream ostream(fp);
++    tile->writeFile(ostream, writeVertexNormals);
++  }
++  fclose(fp);
+ 
+   if (VSIRename(temp_filename.c_str(), filename.c_str()) != 0) {
+     throw CTBException("Could not rename temporary file");
